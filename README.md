@@ -1,6 +1,6 @@
 # example-electron-hang
 
-**Clone and run for a quick way to see Electron in action.**
+**Clone and run for a quick way to see Electron inaction.**
 
 This is a minimal Electron application designed to demonstrate [this issue](https://github.com/electron/electron/issues/27457) in the simplest way possible. 
 
