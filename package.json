@@ -1,22 +1,25 @@
 {
-  "name": "electron-quick-start",
+  "name": "electron-quick-hang",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A minimal Electron example of the bug with electron, iframes, and node-ipc",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/Patronics/example-electron-hang",
   "keywords": [
     "Electron",
     "quick",
-    "start",
-    "tutorial",
+    "hang",
+    "crash",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Patronics",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^11.2.0"
+    "electron": "^11.2.1"
+  },
+  "dependencies": {
+    "node-ipc": "^9.1.3"
   }
 }

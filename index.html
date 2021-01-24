@@ -1,19 +1,42 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    
   </head>
+  
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    
+    <!--these two lines are required to trigger the bug-->
+    <iframe id="mainframe" src="" width="530px" height="380px"></iframe>
+    <iframe id="miniframe" width="220px" height="200px" src=''></iframe>
+    
+    
+    <!--this line is not required, but just used to help demonstrate the issue-->
+    <div id="ts">
+      
+    <script>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    //this line is required to trigger the bug
+      document.getElementById("mainframe").src="./page2.html";
+      
+      
+      //this line is required to trigger the bug
+      const ipc = require('node-ipc');//= new RawIPC;
+
+      //this line is required to trigger the bug
+      function startIPC(){
+        ipc.connectTo("main", function () {});
+      }
+      startIPC();   //when running right away, the bug triggers without fail
+      //setTimeout(startIPC,1)  //but when run asynchronusly, the page works fine, most of the time (but still can intermittently have the same issue in a bigger app);
+      
+      //these lines are not required, added to help demonstrate the problem
+      ts.innerText="hello! If JS didn't hang, you wouldn't have time to read this. "+new Date();
+      window.setTimeout(function(){
+        ts.innerText="this should display in 100 miliseconds, but won't because of this bug "+new Date();
+      }, 100)
+      //also notice that you can't reload the page, and that the devtools are mostly nonfunctional
+      //even command Q does not quit the app (but control-c in the terminal does)
+    </script>
+  
   </body>
 </html>

@@ -2,21 +2,24 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 
+
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration: true,
+      nodeIntegrationInSubFrames: true
     }
-  })
+  })  //nodeIntegration and nodeIntegrationInSubFrames are both required to trigger the bug
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // Open the DevTools, optional for testing the behavior
+   //mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -39,5 +42,19 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+//this ipc server demonstrates example usage, but is not required to trigger the bug
+const RawIPC = require('node-ipc').IPC;
+const ipc = new RawIPC;
+ipc.config.id="main";
+ipc.config.silent=false;
+
+ipc.serve(function () {
+  ipc.server.on("test.data", 
+    function (data, socket) {
+      ipc.server.broadcast('test.data2', data); 
+    })
+    
+    //ipc.server.broadcast("hello", "hello");
+})
+ipc.server.start();
+
