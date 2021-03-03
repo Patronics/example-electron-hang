@@ -30,10 +30,13 @@
       //setTimeout(startIPC,1)  //but when run asynchronusly, the page works fine, most of the time (but still can intermittently have the same issue in a bigger app);
       
       //these lines are not required, added to help demonstrate the problem
-      ts.innerText="hello! If JS didn't hang, you wouldn't have time to read this. "+new Date();
+      ts.innerText="hello! If JS didn't hang, you wouldn't have as much time to read this. "+new Date();
       window.setTimeout(function(){
-        ts.innerText="this should display in 100 miliseconds, but won't because of this bug "+new Date();
-      }, 100)
+        ts.innerText="this should display in 500 miliseconds, but won't because of this bug "+new Date();
+      		window.setTimeout(function(){
+			ts.innerText="it's been 1000 ms now";
+		}, 500)
+	}, 1000)
       //also notice that you can't reload the page, and that the devtools are mostly nonfunctional
       //even command Q does not quit the app (but control-c in the terminal does)
     </script>

@@ -11,6 +11,7 @@ function createWindow () {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
       nodeIntegrationInSubFrames: true
     }
   })  //nodeIntegration and nodeIntegrationInSubFrames are both required to trigger the bug
@@ -19,7 +20,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools, optional for testing the behavior
-   //mainWindow.webContents.openDevTools()
+   mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
