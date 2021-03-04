@@ -6,7 +6,7 @@
   <body style="background-color: white;">
     
     <!--these two lines are required to trigger the bug-->
-    <iframe id="mainframe" src="" width="530px" height="380px"></iframe>
+    <iframe id="mainframe" src="" width="530px" height="200px"></iframe>
     <iframe id="miniframe" width="220px" height="200px" src=''></iframe>
     
     
@@ -19,24 +19,31 @@
       document.getElementById("mainframe").src="./page2.html";
       
       
-      //this line is required to trigger the bug
+      //this line is required to trigger the bug (and also for the demo functionality)
       const ipc = require('node-ipc');//= new RawIPC;
 
-      //this line is required to trigger the bug
+      //this line is required to trigger the bug (and also for demo functionality)
       function startIPC(){
-        ipc.connectTo("main", function () {});
+        ipc.connectTo("main", function () {
+          ipc.of.main.emit('ping');
+          ipc.of.main.on('hello', function(message){
+            document.getElementById('ts').innerText="this should display right away, but won't because of this bug "+new Date();
+            //uses node-ipc messaging with main.js to help demonstrate the issue
+          })
+          
+        });
       }
       startIPC();   //when running right away, the bug triggers without fail
       //setTimeout(startIPC,1)  //but when run asynchronusly, the page works fine, most of the time (but still can intermittently have the same issue in a bigger app);
       
       //these lines are not required, added to help demonstrate the problem
-      ts.innerText="hello! If JS didn't hang, you wouldn't have as much time to read this. "+new Date();
-      window.setTimeout(function(){
-        ts.innerText="this should display in 500 miliseconds, but won't because of this bug "+new Date();
-      		window.setTimeout(function(){
-			ts.innerText="it's been 1000 ms now";
-		}, 500)
-	}, 1000)
+      ts.innerText="hello! If JS didn't hang, you wouldn't have time to read this. "+new Date();
+      //window.setTimeout(function(){
+        
+      //		window.setTimeout(function(){
+		//	ts.innerText="it's been 1000 ms now";
+		//}, 500)
+	//}, 1000)
       //also notice that you can't reload the page, and that the devtools are mostly nonfunctional
       //even command Q does not quit the app (but control-c in the terminal does)
     </script>

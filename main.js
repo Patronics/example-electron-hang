@@ -50,9 +50,9 @@ ipc.config.id="main";
 ipc.config.silent=false;
 
 ipc.serve(function () {
-  ipc.server.on("test.data", 
+  ipc.server.on("ping", 
     function (data, socket) {
-      ipc.server.broadcast('test.data2', data); 
+      ipc.server.broadcast('hello', data); 
     })
     
     //ipc.server.broadcast("hello", "hello");
